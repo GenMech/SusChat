@@ -687,6 +687,12 @@ video {
 .w-screen {
   width: 100vw;
 }
+.w-min {
+  width: min-content;
+}
+.w-max {
+  width: max-content;
+}
 .max-w-80 {
   max-width: 20rem;
 }

@@ -46,7 +46,7 @@ function ChatBotMessage({ messages, error }: MessageProp) {
                 <p
                   className={`text-base text-fontlight font-normal px-4 py-2 rounded-lg w-full ${
                     msg.role === "user"
-                      ? "bg-userbubble w-auto"
+                      ? "bg-userbubble w-max"
                       : "bg-botbubble max-w-[70%] w-auto"
                   }`}
                 >
