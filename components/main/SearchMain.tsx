@@ -37,12 +37,11 @@ function SearchMain({
   ];
 
   // Filter according to user query
-  const filteredSuggestions = suggestions.filter((suggestion) =>
-    suggestion.toLowerCase().includes(userInput.toLowerCase())
-  );
+  // const filteredSuggestions = suggestions.filter((suggestion) =>
+  //   suggestion.toLowerCase().includes(userInput.toLowerCase())
+  // );
 
-  const firstMatch =
-    filteredSuggestions.length > 0 ? filteredSuggestions[0] : "";
+  // const firstMatch = suggestions.length > 0 ? suggestions[0] : "";
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -56,7 +55,7 @@ function SearchMain({
     } else if (e.key === "Tab" || e.key === "ArrowRight") {
       // To auto fill in search bar
       e.preventDefault();
-      setUserInput(firstMatch);
+      setUserInput(userInput + predictiveText);
       setPredictiveText("");
       setShowSuggestions(false);
     }
@@ -67,10 +66,18 @@ function SearchMain({
     setUserInput(input);
     setShowSuggestions(true);
 
-    if (input && firstMatch.toLowerCase().startsWith(input.toLowerCase())) {
-      setPredictiveText(firstMatch.substring(input.length));
-    } else {
+    if (input === "") {
       setPredictiveText("");
+    } else {
+      const match = suggestions.find((suggestion) =>
+        suggestion.toLowerCase().startsWith(input.toLowerCase())
+      );
+
+      if (match) {
+        setPredictiveText(match.substring(input.length));
+      } else {
+        setPredictiveText("");
+      }
     }
   };
 
@@ -133,13 +140,14 @@ function SearchMain({
         {showSuggestions && userInput && (
           <div className="absolute top-[65px] left-0 w-full bg-[#31313140] backdrop-blur-[3.4px] border border-x-[#46BA3C] border-b-[#46BA3C] border-t-transparent rounded-b-lg z-10 mt-1 p-2">
             <ul className="py-2">
-              {filteredSuggestions.map((suggestion, index) => (
+              {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
                   className="px-4 py-2 flex items-center text-white hover:bg-[#012b29] cursor-pointer"
                   onClick={() => {
                     setUserInput(suggestion);
                     setShowSuggestions(false);
+                    setPredictiveText("");
                   }}
                 >
                   <span className="mr-2">
