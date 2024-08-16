@@ -44,16 +44,16 @@ function ChatBotMessage({ messages, error }: MessageProp) {
               </div>
               <>
                 <p
-                  className={`text-base text-fontlight font-normal px-4 py-2 rounded-lg w-full ${
+                  className={`text-base text-fontlight font-normal px-4 py-2 rounded-lg ${
                     msg.role === "user"
                       ? "bg-userbubble w-max"
-                      : "bg-botbubble max-w-[70%] w-auto"
+                      : "bg-botbubble max-w-[80%]"
                   }`}
                 >
                   {msg.text}
                 </p>
                 <p
-                  className={`text-xs mt-[2px] italic w-full ${
+                  className={`text-xs italic w-full ${
                     msg.role === "user" ? "text-right" : "text-left"
                   }`}
                 >
