@@ -1,7 +1,7 @@
 export const UseCases = [
-  "Business",
-  "Retention",
-  "Acquisition",
-  "Website",
-  "Investment",
+  "business",
+  "retention",
+  "acquisition",
+  "website",
+  "investment",
 ];
