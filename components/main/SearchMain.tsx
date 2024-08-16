@@ -107,20 +107,22 @@ function SearchMain({
           }`}
         >
           <CiSearch className="text-4xl" />
-          <input
-            type="text"
-            value={userInput}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyPress}
-            className="outline-none bg-transparent py-3 w-full placeholder:text-base placeholder:text-fontlight placeholder:font-normal"
-            placeholder="Start your search voyex 🚀"
-          />
-          {predictiveText && (
-            <span className="absolute top-0 left-[50px] py-3 pointer-events-none opacity-50">
-              {userInput}
-              <span className="text-[#ebe7e7]">{predictiveText}</span>
-            </span>
-          )}
+          <div className="relative w-full">
+            <input
+              type="text"
+              value={userInput}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyPress}
+              className="outline-none bg-transparent py-3 w-full placeholder:text-base placeholder:text-fontlight placeholder:font-normal"
+              placeholder="Start your search voyex 🚀"
+            />
+            {predictiveText && (
+              <span className="absolute top-0 left-0 py-3 pointer-events-none opacity-50 w-full overflow-hidden text-ellipsis whitespace-nowrap">
+                <span>{userInput}</span>
+                <span className="text-[#ebe7e7]">{predictiveText}</span>
+              </span>
+            )}
+          </div>
           <button
             className={`py-3 pr-[1px] flex items-center justify-center w-9 h-8 rounded-full ${
               userInput ? "bg-white text-black" : "bg-transparent text-white"
