@@ -136,7 +136,7 @@ function SearchMain({
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
-                  className="px-4 py-2 flex items-center text-white hover:bg-[#012b29] cursor-pointer"
+                  className="px-4 py-2 flex items-center text-white hover:bg-[#012b29] rounded-lg cursor-pointer"
                   onClick={() => {
                     setUserInput(suggestion);
                     setShowSuggestions(false);
