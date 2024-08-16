@@ -26,6 +26,7 @@ function SearchMain({
   handleSendMessage,
 }: SearchMainProp) {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
+  const [predictiveText, setPredictiveText] = useState<string>("");
 
   // Dummy as of now, Will be replaced by the response provided by API
   const suggestions = [
@@ -34,6 +35,14 @@ function SearchMain({
     "I want to improve my marketing",
     "I want to learn about marketing",
   ];
+
+  // Filter according to user query
+  const filteredSuggestions = suggestions.filter((suggestion) =>
+    suggestion.toLowerCase().includes(userInput.toLowerCase())
+  );
+
+  const firstMatch =
+    filteredSuggestions.length > 0 ? filteredSuggestions[0] : "";
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -44,6 +53,24 @@ function SearchMain({
       }
       setShowChat(true);
       handleSendMessage();
+    } else if (e.key === "Tab" || e.key === "ArrowRight") {
+      // To auto fill in search bar
+      e.preventDefault();
+      setUserInput(firstMatch);
+      setPredictiveText("");
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const input = e.target.value;
+    setUserInput(input);
+    setShowSuggestions(true);
+
+    if (input && firstMatch.toLowerCase().startsWith(input.toLowerCase())) {
+      setPredictiveText(firstMatch.substring(input.length));
+    } else {
+      setPredictiveText("");
     }
   };
 
@@ -83,14 +110,17 @@ function SearchMain({
           <input
             type="text"
             value={userInput}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              setUserInput(e.target.value);
-              setShowSuggestions(true);
-            }}
+            onChange={handleInputChange}
             onKeyDown={handleKeyPress}
             className="outline-none bg-transparent py-3 w-full placeholder:text-base placeholder:text-fontlight placeholder:font-normal"
             placeholder="Start your search voyex 🚀"
           />
+          {predictiveText && (
+            <span className="absolute top-0 left-[50px] py-3 pointer-events-none opacity-50">
+              {userInput}
+              <span className="text-[#ebe7e7]">{predictiveText}</span>
+            </span>
+          )}
           <button
             className={`py-3 pr-[1px] flex items-center justify-center w-9 h-8 rounded-full ${
               userInput ? "bg-white text-black" : "bg-transparent text-white"
@@ -103,7 +133,7 @@ function SearchMain({
         {showSuggestions && userInput && (
           <div className="absolute top-[65px] left-0 w-full bg-[#31313140] backdrop-blur-[3.4px] border border-x-[#46BA3C] border-b-[#46BA3C] border-t-transparent rounded-b-lg z-10 mt-1 p-2">
             <ul className="py-2">
-              {suggestions.map((suggestion, index) => (
+              {filteredSuggestions.map((suggestion, index) => (
                 <li
                   key={index}
                   className="px-4 py-2 flex items-center text-white hover:bg-[#012b29] cursor-pointer"
