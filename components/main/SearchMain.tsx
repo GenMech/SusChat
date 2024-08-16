@@ -36,13 +36,6 @@ function SearchMain({
     "I want to learn about marketing",
   ];
 
-  // Filter according to user query
-  // const filteredSuggestions = suggestions.filter((suggestion) =>
-  //   suggestion.toLowerCase().includes(userInput.toLowerCase())
-  // );
-
-  // const firstMatch = suggestions.length > 0 ? suggestions[0] : "";
-
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
