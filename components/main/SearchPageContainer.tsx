@@ -25,62 +25,62 @@ function SearchPageContainer() {
   const [error, setError] = useState<string | null>(null);
   const [showChat, setShowChat] = useState<boolean>(false);
 
-  const apiKey = "AIzaSyB-28-4XA34UY8hIhtuT6FFyA108WiiJWU";
-  const MODEL_NAME = "gemini-1.5-pro";
-  const genAI = new GoogleGenerativeAI(apiKey);
+  // const apiKey = "AIzaSyB-28-4XA34UY8hIhtuT6FFyA108WiiJWU";
+  // const MODEL_NAME = "gemini-1.5-pro";
+  // const genAI = new GoogleGenerativeAI(apiKey);
 
-  const generationConfig = {
-    temperature: 0.9,
-    topP: 1,
-    topK: 1,
-    maxOutputTokens: 1000,
-    responseMimeType: "text/plain",
-  };
+  // const generationConfig = {
+  //   temperature: 0.9,
+  //   topP: 1,
+  //   topK: 1,
+  //   maxOutputTokens: 1000,
+  //   responseMimeType: "text/plain",
+  // };
 
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
+  // const safetySettings = [
+  //   {
+  //     category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+  //     threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  //   },
+  //   {
+  //     category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+  //     threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  //   },
+  //   {
+  //     category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+  //     threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  //   },
+  //   {
+  //     category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+  //     threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  //   },
+  // ];
 
-  useEffect(() => {
-    const initChat = async () => {
-      try {
-        const newChat = await genAI
-          .getGenerativeModel({ model: MODEL_NAME })
-          .startChat({
-            generationConfig,
-            safetySettings,
-            history: messages.map((msg) => ({
-              role: msg.role,
-              parts: [
-                {
-                  text: msg.text,
-                },
-              ],
-              // text: msg.text,
-            })),
-          });
-        setChat(newChat);
-      } catch (error) {
-        setError("Failed to initialize chat. Please try again.");
-      }
-    };
-    initChat();
-  }, []);
+  // useEffect(() => {
+  //   const initChat = async () => {
+  //     try {
+  //       const newChat = await genAI
+  //         .getGenerativeModel({ model: MODEL_NAME })
+  //         .startChat({
+  //           generationConfig,
+  //           safetySettings,
+  //           history: messages.map((msg) => ({
+  //             role: msg.role,
+  //             parts: [
+  //               {
+  //                 text: msg.text,
+  //               },
+  //             ],
+  //             // text: msg.text,
+  //           })),
+  //         });
+  //       setChat(newChat);
+  //     } catch (error) {
+  //       setError("Failed to initialize chat. Please try again.");
+  //     }
+  //   };
+  //   initChat();
+  // }, []);
 
   const handleSendMessage = async () => {
     try {
@@ -93,17 +93,27 @@ function SearchPageContainer() {
       setMessages((prevMessages) => [...prevMessages, userMessage]);
       setUserInput("");
 
-      if (chat) {
-        const result = await chat.sendMessage(userInput);
-        const response = result.response;
-        const text = response.text();
-        const botMessage: Message = {
-          text: text,
-          role: "bot",
-          timestamp: new Date(),
-        };
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      const response = await fetch("/api/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: userInput }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send message. Please try again.");
       }
+
+      const data = await response.json();
+      console.log("data:", data);
+      const botMessage: Message = {
+        text: data.answer ?? "Failed to get response. Please try again!",
+        role: "bot",
+        timestamp: new Date(),
+      };
+
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
       setError("Failed to send message. Please try again.");
     }
@@ -111,7 +121,7 @@ function SearchPageContainer() {
 
   const handleNewConversation = () => {
     setMessages([]);
-    setChat(null);
+    // setChat(null);
   };
   return !showChat ? (
     <SearchMain
