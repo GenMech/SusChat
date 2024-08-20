@@ -3,7 +3,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { GoSidebarCollapse } from "react-icons/go";
 import { usePathname } from "next/navigation";
+import { VscSignIn } from "react-icons/vsc";
+import { FaUserCircle } from "react-icons/fa";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -15,19 +18,14 @@ function Navbar() {
 
   return (
     <div
-      className={`flex flex-col items-center gap-5 justify-between py-4 rounded-xl z-10 ml-3 h-[95%] ${
-        isOpen ? "w-64 px-3" : "w-[86px] px-2"
+      className={`flex flex-col items-center gap-5 justify-between py-4 rounded-xl z-10 ml-3 h-[95%] px-3 ${
+        isOpen ? "w-64" : "w-[86px]"
       } bg-gradient-to-tr from-[#00a766]/10 to-[#999999]/10 overflow-hidden transition-all duration-300`}
     >
       <div className="flex items-center justify-center w-full z-10">
         <div className="flex items-center gap-6 py-4 pl-5 w-full">
           <button onClick={toggleSidebar}>
-            <Image
-              src="/voyex-logo.png"
-              alt="voyex logo"
-              width={24}
-              height={24}
-            />
+            <GoSidebarCollapse className="text-2xl" />
           </button>
           {isOpen && (
             <Link href="/" className="text-xl text-white font-bold">
@@ -158,21 +156,21 @@ function Navbar() {
         </div>
       </div>
 
-      <div
-        className={`flex flex-col items-center gap-3 w-full z-10 ${
-          isOpen ? "" : "h-[104px]"
-        }`}
-      >
-        {isOpen && (
-          <>
-            <button className="text-btnlime text-base font-medium py-3 w-full rounded-xl bg-none capitalize">
-              sign up
-            </button>
-            <button className="text-fontlight text-base font-medium py-3 w-full rounded-xl bg-btnlime capitalize">
-              log in
-            </button>
-          </>
-        )}
+      <div className={`flex flex-col items-center gap-2 w-full z-10`}>
+        <button
+          title="Signup"
+          className="flex items-center justify-center gap-3 text-btnlime text-base font-medium py-3 w-full h-12 rounded-xl bg-none capitalize"
+        >
+          {!isOpen && <VscSignIn className="text-xl" />}
+          {isOpen && "sign up"}
+        </button>
+        <button
+          title="Login"
+          className="flex items-center justify-center gap-3 text-fontlight text-base font-medium py-3 w-full h-12 rounded-xl bg-btnlime capitalize"
+        >
+          {!isOpen && <FaUserCircle className="text-xl" />}
+          {isOpen && "log in"}
+        </button>
       </div>
     </div>
   );
