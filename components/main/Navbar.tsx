@@ -1,18 +1,27 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(true);
   const pathname = usePathname();
 
+  const toggleSidebar = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="flex flex-col items-center gap-5 justify-between py-4 px-3 rounded-xl z-10 ml-3 h-[95%] w-64 bg-gradient-to-tr from-[#00a766]/10 to-[#999999]/10 overflow-hidden transition-all">
+    <div
+      className={`flex flex-col items-center gap-5 justify-between py-4 rounded-xl z-10 ml-3 h-[95%] ${
+        isOpen ? "w-64 px-3" : "w-[86px] px-2"
+      } bg-gradient-to-tr from-[#00a766]/10 to-[#999999]/10 overflow-hidden transition-all duration-300`}
+    >
       <div className="flex items-center justify-center w-full z-10">
-        <div className="flex items-center gap-6 py-4 pl-4 w-full">
-          <button className="">
+        <div className="flex items-center gap-6 py-4 pl-5 w-full">
+          <button onClick={toggleSidebar}>
             <Image
               src="/voyex-logo.png"
               alt="voyex logo"
@@ -20,13 +29,15 @@ function Navbar() {
               height={24}
             />
           </button>
-          <Link href="/" className="text-xl text-white font-bold">
-            Voyex.
-          </Link>
+          {isOpen && (
+            <Link href="/" className="text-xl text-white font-bold">
+              Voyex.
+            </Link>
+          )}
         </div>
       </div>
 
-      <div className="flex flex-col gap-4 w-full items-center justify-center overflow-y-scroll pb-2">
+      <div className="flex flex-col gap-4 w-full items-center justify-center pb-2">
         {/* <div className="w-full">
           <button className="flex items-center w-full px-4 py-3 bg-none">
             <Image
@@ -80,9 +91,10 @@ function Navbar() {
               width={24}
               height={24}
               className={`i ${pathname.includes("search") ? "img" : ""}`}
-              // className="img"
             />
-            <span className="text-base font-medium ml-2">Search</span>
+            {isOpen && (
+              <span className="text-base font-medium ml-2">Search</span>
+            )}
           </Link>
           <Link
             href="/templates"
@@ -100,9 +112,10 @@ function Navbar() {
               width={24}
               height={24}
               className={`i ${pathname.includes("templates") ? "img" : ""}`}
-              // className="img"
             />
-            <span className="text-base font-medium ml-2">Templates</span>
+            {isOpen && (
+              <span className="text-base font-medium ml-2">Templates</span>
+            )}
           </Link>
           <Link
             href="/galactimart"
@@ -118,9 +131,10 @@ function Navbar() {
               width={24}
               height={24}
               className={`i ${pathname.includes("galactimart") ? "img" : ""}`}
-              // className="img"
             />
-            <span className="text-base font-medium ml-2">GalactiMart</span>
+            {isOpen && (
+              <span className="text-base font-medium ml-2">GalactiMart</span>
+            )}
           </Link>
           <Link
             href="/workspace"
@@ -136,20 +150,29 @@ function Navbar() {
               width={24}
               height={24}
               className={`i ${pathname.includes("workspace") ? "img" : ""}`}
-              // className="img"
             />
-            <span className="text-base font-medium ml-2">Workspace</span>
+            {isOpen && (
+              <span className="text-base font-medium ml-2">Workspace</span>
+            )}
           </Link>
         </div>
       </div>
 
-      <div className="flex flex-col items-center gap-3 w-full z-10">
-        <button className="text-btnlime text-base font-medium py-3 w-full rounded-xl bg-none capitalize">
-          sign up
-        </button>
-        <button className="text-fontlight text-base font-medium py-3 w-full rounded-xl bg-btnlime capitalize">
-          log in
-        </button>
+      <div
+        className={`flex flex-col items-center gap-3 w-full z-10 ${
+          isOpen ? "" : "h-[104px]"
+        }`}
+      >
+        {isOpen && (
+          <>
+            <button className="text-btnlime text-base font-medium py-3 w-full rounded-xl bg-none capitalize">
+              sign up
+            </button>
+            <button className="text-fontlight text-base font-medium py-3 w-full rounded-xl bg-btnlime capitalize">
+              log in
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
