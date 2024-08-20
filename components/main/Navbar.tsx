@@ -3,7 +3,10 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { SiGnuprivacyguard } from "react-icons/si";
 import { usePathname } from "next/navigation";
+import { VscSignIn } from "react-icons/vsc";
+import { FaUserCircle } from "react-icons/fa";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(true);
@@ -158,21 +161,15 @@ function Navbar() {
         </div>
       </div>
 
-      <div
-        className={`flex flex-col items-center gap-3 w-full z-10 ${
-          isOpen ? "" : "h-[104px]"
-        }`}
-      >
-        {isOpen && (
-          <>
-            <button className="text-btnlime text-base font-medium py-3 w-full rounded-xl bg-none capitalize">
-              sign up
-            </button>
-            <button className="text-fontlight text-base font-medium py-3 w-full rounded-xl bg-btnlime capitalize">
-              log in
-            </button>
-          </>
-        )}
+      <div className={`flex flex-col items-center gap-3 w-full z-10`}>
+        <button className="flex items-center justify-center gap-3 text-btnlime text-base font-medium py-3 w-full rounded-xl bg-none capitalize">
+          {!isOpen && <VscSignIn className="text-2xl" />}
+          {isOpen && "sign up"}
+        </button>
+        <button className="flex items-center justify-center gap-3 text-fontlight text-base font-medium py-3 w-full rounded-xl bg-btnlime capitalize">
+          {!isOpen && <FaUserCircle className="text-2xl" />}
+          {isOpen && "log in"}
+        </button>
       </div>
     </div>
   );
