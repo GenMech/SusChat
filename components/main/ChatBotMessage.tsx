@@ -48,7 +48,7 @@ function ChatBotMessage({ messages, error }: MessageProp) {
                     msg.role === "user"
                       ? "bg-userbubble w-max"
                       : "bg-botbubble max-w-[80%]"
-                  }`}
+                  } whitespace-pre-line`}
                 >
                   {msg.text}
                 </p>
