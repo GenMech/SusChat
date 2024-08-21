@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { FcFaq } from "react-icons/fc";
 
@@ -8,17 +8,49 @@ interface MessageProp {
   error: string | null;
 }
 
+export const typeText = (
+  setBotMessage: React.Dispatch<React.SetStateAction<Record<number, string>>>,
+  index: number,
+  text: string,
+  speed: number
+) => {
+  let charIndex = 0;
+  const interval = setInterval(() => {
+    setBotMessage((prev) => {
+      const currentText = prev[index] || "";
+      const newText = currentText + text.charAt(charIndex);
+      if (charIndex >= text.length - 1) {
+        clearInterval(interval);
+      }
+      return {
+        ...prev,
+        [index]: newText,
+      };
+    });
+    charIndex++;
+  }, speed);
+};
+
 function ChatBotMessage({ messages, error }: MessageProp) {
   const ref = useRef<HTMLDivElement>(null);
+  const [botMessage, setBotMessage] = useState<Record<number, string>>({});
 
   useEffect(() => {
     if (ref.current === null) return;
     ref.current.scrollIntoView({ behavior: "smooth" });
   }, [messages.length]);
 
+  useEffect(() => {
+    messages.forEach((msg, index) => {
+      if (msg.role !== "user" && !botMessage[index]) {
+        typeText(setBotMessage, index, msg.text, 20);
+      }
+    });
+  }, [messages, botMessage]);
+
   return (
     <>
-      <ScrollArea className="relative w-full h-[80vh] pt-3">
+      <ScrollArea className="relative w-full h-[80vh] pt-3 overflow-y-auto">
         {messages.map((msg, index) => (
           <div
             key={index}
@@ -50,7 +82,7 @@ function ChatBotMessage({ messages, error }: MessageProp) {
                       : "bg-botbubble max-w-[80%]"
                   } whitespace-pre-line`}
                 >
-                  {msg.text}
+                  {msg.role === "user" ? msg.text : botMessage[index] || ""}
                 </p>
                 <p
                   className={`text-xs italic w-full ${
@@ -63,6 +95,7 @@ function ChatBotMessage({ messages, error }: MessageProp) {
             </div>
           </div>
         ))}
+        <div ref={ref} />
         {messages.length === 0 && (
           <div className="absolute flex items-center justify-center w-full h-full">
             <div className="flex flex-col items-center text-white/50">
