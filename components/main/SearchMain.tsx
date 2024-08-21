@@ -148,7 +148,7 @@ function SearchMain({
                   <span className="mr-2">
                     <LuClock4 />
                   </span>
-                  <span className="text-sm font-light">{suggestion}</span>
+                  <span className="text-sm font-normal">{suggestion}</span>
                 </li>
               ))}
             </ul>
@@ -156,7 +156,11 @@ function SearchMain({
         )}
       </div>
 
-      <div className="flex flex-col-reverse gap-2 text-base text-fontlight font-normal w-full mt-6">
+      <div
+        className={`flex flex-col-reverse gap-2 text-base text-fontlight font-normal w-full ${
+          showSuggestions && userInput ? "mt-[196px]" : "mt-6"
+        }`}
+      >
         <button className="italic p-3 border border-[#d0d5dd] rounded-full">
           🔥 Recently Added
         </button>
