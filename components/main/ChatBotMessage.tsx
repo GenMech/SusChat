@@ -99,8 +99,16 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
       <ScrollArea className="relative w-full h-[80vh] pt-3">
         {renderedMessages}
         {isLoading && (
-          <div className="self-start text-fontlight pt-3 text-base font-normal px-4 py-2 rounded-lg bg-botbubble max-w-[0%] mb-3">
-            Typing<span className="animate-pulse">...</span>
+          <div className="flex flex-col items-start gap-2">
+            <div className="flex flex-row-reverse gap-2 items-center">
+              <p className="">Voyex AI</p>
+              <span className="w-7 h-7 rounded-full overflow-hidden">
+                <Image alt="emoji" height={40} width={40} src="/emoji.png" />{" "}
+              </span>
+            </div>
+            <div className="flex text-fontlight text-base font-normal px-4 py-2 rounded-lg bg-botbubble min-w-[18%]">
+              Typing<span className="animate-pulse">...</span>
+            </div>
           </div>
         )}
         <div ref={ref} />
