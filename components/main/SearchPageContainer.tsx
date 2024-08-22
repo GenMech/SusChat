@@ -24,6 +24,7 @@ function SearchPageContainer() {
   const [chat, setChat] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [showChat, setShowChat] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // const apiKey = "AIzaSyB-28-4XA34UY8hIhtuT6FFyA108WiiJWU";
   // const MODEL_NAME = "gemini-1.5-pro";
@@ -84,6 +85,7 @@ function SearchPageContainer() {
 
   const handleSendMessage = async () => {
     try {
+      setIsLoading(true);
       const userMessage: Message = {
         text: userInput,
         role: "user",
@@ -116,6 +118,8 @@ function SearchPageContainer() {
       setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
       setError("Failed to send message. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -140,6 +144,7 @@ function SearchPageContainer() {
       setUserInput={setUserInput}
       handleSendMessage={handleSendMessage}
       handleNewConversation={handleNewConversation}
+      isLoading={isLoading}
     />
   );
 }

@@ -7,6 +7,7 @@ import TypewriterComponent from "typewriter-effect";
 import { BsSend } from "react-icons/bs";
 import { UseCases } from "@/lib/constant";
 import { LuClock4 } from "react-icons/lu";
+import TrendingModal from "./trendingModal";
 
 interface SearchMainProp {
   messages: any[];
@@ -27,6 +28,7 @@ function SearchMain({
 }: SearchMainProp) {
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [predictiveText, setPredictiveText] = useState<string>("");
+  const [showTrendingModal, setShowTrendingModal] = useState<boolean>(false);
 
   // Dummy as of now, Will be replaced by the response provided by API
   const suggestions = [
@@ -35,6 +37,34 @@ function SearchMain({
     "I want to improve my marketing",
     "I want to learn about marketing",
   ];
+
+  // For now Dummmy Data
+  const trendingSearches = [
+    "Tell me latest marketing strategies",
+    "How can I Boost Sales in 2024?",
+    "What are the Top 10 Marketing Tools?",
+    "Suggest me tools to improve user retention",
+    "What can I do to improve acquisition?",
+    "What is the optimised was to improve SEO?",
+    "Suggest me some tools to visualize my websites analytics",
+  ];
+
+  const handleTrendingClick = (query: string) => {
+    setUserInput(query);
+    setShowTrendingModal(false);
+    setShowSuggestions(false);
+  };
+
+  const handleSurpriseClick = () => {
+    const randomSearch =
+      trendingSearches[Math.floor(Math.random() * trendingSearches.length)];
+    setUserInput(randomSearch);
+    setShowSuggestions(false);
+  };
+
+  const closeModal = () => {
+    setShowTrendingModal(false);
+  };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -148,7 +178,7 @@ function SearchMain({
                   <span className="mr-2">
                     <LuClock4 />
                   </span>
-                  <span className="text-sm font-light">{suggestion}</span>
+                  <span className="text-sm font-normal">{suggestion}</span>
                 </li>
               ))}
             </ul>
@@ -156,19 +186,38 @@ function SearchMain({
         )}
       </div>
 
-      <div className="flex flex-col-reverse gap-2 text-base text-fontlight font-normal w-full mt-6">
+      <div
+        className={`flex flex-col-reverse gap-2 text-base text-fontlight font-normal w-full ${
+          showSuggestions && userInput ? "mt-[196px]" : "mt-6"
+        }`}
+      >
         <button className="italic p-3 border border-[#d0d5dd] rounded-full">
           🔥 Recently Added
         </button>
         <div className="flex items-center gap-2 w-full">
-          <button className=" italic p-3 border border-[#d0d5dd] rounded-full w-1/2">
+          <button
+            className=" italic p-3 border border-[#d0d5dd] rounded-full w-1/2"
+            onClick={handleSurpriseClick}
+          >
             🔥 Surprise ME!
           </button>
-          <button className="italic p-3 border border-[#d0d5dd] rounded-full w-1/2">
+          <button
+            className="italic p-3 border border-[#d0d5dd] rounded-full w-1/2"
+            onClick={() => setShowTrendingModal(true)}
+          >
             🔥 Trending Searches
           </button>
         </div>
       </div>
+      {showTrendingModal && (
+        <>
+          <TrendingModal
+            trendingSearches={trendingSearches}
+            onClose={closeModal}
+            onQueryClick={handleTrendingClick}
+          />
+        </>
+      )}
     </div>
   );
 }
