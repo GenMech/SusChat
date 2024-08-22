@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { ScrollArea } from "../ui/scroll-area";
 import { FcFaq } from "react-icons/fc";
 
 interface MessageProp {
   messages: any[];
   error: string | null;
+  isLoading: boolean;
 }
 
 export const typeText = (
@@ -31,14 +32,13 @@ export const typeText = (
   }, speed);
 };
 
-function ChatBotMessage({ messages, error }: MessageProp) {
+function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
   const ref = useRef<HTMLDivElement>(null);
   const [botMessage, setBotMessage] = useState<Record<number, string>>({});
 
   useEffect(() => {
-    if (ref.current === null) return;
-    ref.current.scrollIntoView({ behavior: "smooth" });
-  }, [messages.length]);
+    ref.current?.scrollIntoView();
+  }, [messages.length, botMessage]);
 
   useEffect(() => {
     messages.forEach((msg, index) => {
@@ -46,55 +46,63 @@ function ChatBotMessage({ messages, error }: MessageProp) {
         typeText(setBotMessage, index, msg.text, 20);
       }
     });
-  }, [messages, botMessage]);
+  }, [messages.length, botMessage]);
+
+  // For optimisation, But I guess in our case botmessage will change as bot types so not much effect, still for better code structure.
+  const renderedMessages = useMemo(() => {
+    return messages.map((msg, index) => (
+      <div
+        key={index}
+        className={`pb-3 ${msg.role === "user" ? "self-end" : "self-start"}`}
+        // ref={index == messages.length - 1 ? ref : null} // If the message is last one or latest one
+      >
+        <div
+          className={`flex flex-col gap-2 ${
+            msg.role === "user" ? "items-end" : "items-start"
+          }`}
+        >
+          <div
+            className={`flex items-center gap-2 ${
+              msg.role === "user" ? "flex-row" : "flex-row-reverse"
+            }`}
+          >
+            <p className="">{msg.role === "user" ? "You" : "Voyex AI"}</p>
+            <span className="w-7 h-7 rounded-full overflow-hidden">
+              <Image alt="emoji" height={40} width={40} src="/emoji.png" />{" "}
+            </span>
+          </div>
+          <>
+            <p
+              className={`text-base text-fontlight font-normal px-4 py-2 rounded-lg ${
+                msg.role === "user"
+                  ? "bg-userbubble w-max"
+                  : "bg-botbubble max-w-[80%]"
+              } whitespace-pre-line`}
+            >
+              {msg.role === "user" ? msg.text : botMessage[index] || ""}
+            </p>
+            <p
+              className={`text-xs italic w-full ${
+                msg.role === "user" ? "text-right" : "text-left"
+              }`}
+            >
+              {msg.timestamp.toLocaleString()}
+            </p>
+          </>
+        </div>
+      </div>
+    ));
+  }, [messages.length, botMessage]);
 
   return (
     <>
-      <ScrollArea className="relative w-full h-[80vh] pt-3 overflow-y-auto">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`pb-3 ${
-              msg.role === "user" ? "self-end" : "self-start"
-            }`}
-            ref={index + 1 == messages.length ? ref : null} // If the message is last one or latest one
-          >
-            <div
-              className={`flex flex-col gap-2 ${
-                msg.role === "user" ? "items-end" : "items-start"
-              }`}
-            >
-              <div
-                className={`flex items-center gap-2 ${
-                  msg.role === "user" ? "flex-row" : "flex-row-reverse"
-                }`}
-              >
-                <p className="">{msg.role === "user" ? "You" : "Voyex AI"}</p>
-                <span className="w-7 h-7 rounded-full overflow-hidden">
-                  <Image alt="emoji" height={40} width={40} src="/emoji.png" />{" "}
-                </span>
-              </div>
-              <>
-                <p
-                  className={`text-base text-fontlight font-normal px-4 py-2 rounded-lg ${
-                    msg.role === "user"
-                      ? "bg-userbubble w-max"
-                      : "bg-botbubble max-w-[80%]"
-                  } whitespace-pre-line`}
-                >
-                  {msg.role === "user" ? msg.text : botMessage[index] || ""}
-                </p>
-                <p
-                  className={`text-xs italic w-full ${
-                    msg.role === "user" ? "text-right" : "text-left"
-                  }`}
-                >
-                  {msg.timestamp.toLocaleString()}
-                </p>
-              </>
-            </div>
+      <ScrollArea className="relative w-full h-[80vh] pt-3">
+        {renderedMessages}
+        {isLoading && (
+          <div className="self-start text-fontlight pt-3 text-base font-normal px-4 py-2 rounded-lg bg-botbubble max-w-[0%] mb-3">
+            Typing<span className="animate-pulse">...</span>
           </div>
-        ))}
+        )}
         <div ref={ref} />
         {messages.length === 0 && (
           <div className="absolute flex items-center justify-center w-full h-full">

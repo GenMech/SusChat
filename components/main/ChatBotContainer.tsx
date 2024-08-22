@@ -10,6 +10,7 @@ interface ChatBotContainerProp {
   setUserInput: Function;
   handleSendMessage: Function;
   handleNewConversation: Function;
+  isLoading: boolean;
 }
 
 function ChatBotContainer({
@@ -19,13 +20,18 @@ function ChatBotContainer({
   setUserInput,
   handleSendMessage,
   handleNewConversation,
+  isLoading,
 }: ChatBotContainerProp) {
   return (
     <div className="relative flex flex-col justify-between w-full h-full mb-24">
       <ChatTop messages={messages} />
 
       <div className="flex items-start justify-between gap-8 w-full px-5 mt-5">
-        <ChatBotMessage messages={messages} error={error} />
+        <ChatBotMessage
+          messages={messages}
+          error={error}
+          isLoading={isLoading}
+        />
         <ChatAside />
       </div>
 
