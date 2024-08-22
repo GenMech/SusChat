@@ -99,7 +99,7 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
       <ScrollArea className="relative w-full h-[80vh] pt-3">
         {renderedMessages}
         {isLoading && (
-          <div className="flex flex-col items-start gap-2">
+          <div className="flex flex-col items-start gap-2 pb-3">
             <div className="flex flex-row-reverse gap-2 items-center">
               <p className="">Voyex AI</p>
               <span className="w-7 h-7 rounded-full overflow-hidden">
