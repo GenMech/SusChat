@@ -38,7 +38,7 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
 
   useEffect(() => {
     ref.current?.scrollIntoView();
-  }, [messages.length, botMessage]);
+  }, [messages, botMessage]);
 
   useEffect(() => {
     messages.forEach((msg, index) => {
@@ -46,7 +46,7 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
         typeText(setBotMessage, index, msg.text, 20);
       }
     });
-  }, [messages.length, botMessage]);
+  }, [messages, botMessage]);
 
   // For optimisation, But I guess in our case botmessage will change as bot types so not much effect, still for better code structure.
   const renderedMessages = useMemo(() => {
@@ -92,7 +92,7 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
         </div>
       </div>
     ));
-  }, [messages.length, botMessage]);
+  }, [messages, botMessage]);
 
   return (
     <>

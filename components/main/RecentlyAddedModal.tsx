@@ -34,7 +34,7 @@ const RecentlyAddedModal: React.FC<RecentlyAddedModalProps> = ({
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [onClose]);
 
   return (
     <div
