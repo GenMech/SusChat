@@ -40,9 +40,11 @@ const TrendingModal: React.FC<TrendingModalProps> = ({
         <div className="flex-grow overflow-y-auto">
           <ul className="flex flex-row flex-wrap gap-3 pl-2 pt-1 pb-1">
             {trendingSearches.map((search, index) => (
-              <div className="bg-transparent bg-opacity-50 border-[1px] hover:scale-105 hover:shadow-lg rounded border-slate-500 shadow-sm shadow-slate-500 transform transition-all duration-150 ease-in-out">
+              <div
+                key={index}
+                className="bg-transparent bg-opacity-50 border-[1px] hover:scale-105 hover:shadow-lg rounded border-slate-500 shadow-sm shadow-slate-500 transform transition-all duration-150 ease-in-out"
+              >
                 <li
-                  key={index}
                   className="p-2 flex flex-row gap-2 cursor-pointer"
                   onClick={() => onQueryClick(search)}
                 >
