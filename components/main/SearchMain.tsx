@@ -262,25 +262,25 @@ function SearchMain({
       </div>
 
       <div
-        className={`flex flex-col-reverse gap-2 text-base text-fontlight font-normal w-full ${
-          showSuggestions && userInput ? "mt-[196px]" : "mt-6"
+        className={`flex flex-col-reverse gap-3 text-base text-fontlight font-normal w-full ${
+          showSuggestions && userInput ? "mt-[196px]" : "mt-10"
         }`}
       >
         <button
-          className="italic p-3 border border-[#d0d5dd] rounded-full"
+          className="italic p-3 border border-[#d0d5dd] rounded-md"
           onClick={() => setShowRecentlyAddedModal(true)}
         >
           🔥 Recently Added
         </button>
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-3 w-full">
           <button
-            className=" italic p-3 border border-[#d0d5dd] rounded-full w-1/2"
+            className=" italic p-3 border border-[#d0d5dd] rounded-md w-1/2"
             onClick={handleSurpriseClick}
           >
             🔥 Surprise ME!
           </button>
           <button
-            className="italic p-3 border border-[#d0d5dd] rounded-full w-1/2"
+            className="italic p-3 border border-[#d0d5dd] rounded-lg w-1/2"
             onClick={() => setShowTrendingModal(true)}
           >
             🔥 Trending Searches
