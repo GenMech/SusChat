@@ -10,7 +10,6 @@ export async function POST(req: NextRequest) {
         headers: {
           "x-api-key": process.env.X_QUERY_SEARCH_API_KEY,
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
         },
         body: JSON.stringify(body),
       }
