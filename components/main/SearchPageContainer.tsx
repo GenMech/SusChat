@@ -85,6 +85,9 @@ function SearchPageContainer() {
 
   const handleSendMessage = async () => {
     try {
+      if (!userInput.trim()) {
+        return;
+      }
       setIsLoading(true);
       const userMessage: Message = {
         text: userInput,

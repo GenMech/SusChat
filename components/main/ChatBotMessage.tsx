@@ -9,44 +9,44 @@ interface MessageProp {
   isLoading: boolean;
 }
 
-export const typeText = (
-  setBotMessage: React.Dispatch<React.SetStateAction<Record<number, string>>>,
-  index: number,
-  text: string,
-  speed: number
-) => {
-  let charIndex = 0;
-  const interval = setInterval(() => {
-    setBotMessage((prev) => {
-      const currentText = prev[index] || "";
-      const newText = currentText + text.charAt(charIndex);
-      if (charIndex >= text.length - 1) {
-        clearInterval(interval);
-      }
-      return {
-        ...prev,
-        [index]: newText,
-      };
-    });
-    charIndex++;
-  }, speed);
-};
+// export const typeText = (
+//   setBotMessage: React.Dispatch<React.SetStateAction<Record<number, string>>>,
+//   index: number,
+//   text: string,
+//   speed: number
+// ) => {
+//   let charIndex = 0;
+//   const interval = setInterval(() => {
+//     setBotMessage((prev) => {
+//       const currentText = prev[index] || "";
+//       const newText = currentText + text.charAt(charIndex);
+//       if (charIndex >= text.length - 1) {
+//         clearInterval(interval);
+//       }
+//       return {
+//         ...prev,
+//         [index]: newText,
+//       };
+//     });
+//     charIndex++;
+//   }, speed);
+// };
 
 function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
   const ref = useRef<HTMLDivElement>(null);
-  const [botMessage, setBotMessage] = useState<Record<number, string>>({});
+  // const [botMessage, setBotMessage] = useState<Record<number, string>>({});
 
   useEffect(() => {
     ref.current?.scrollIntoView();
-  }, [messages, botMessage]);
+  }, [messages]);
 
-  useEffect(() => {
-    messages.forEach((msg, index) => {
-      if (msg.role !== "user" && !botMessage[index]) {
-        typeText(setBotMessage, index, msg.text, 20);
-      }
-    });
-  }, [messages, botMessage]);
+  // useEffect(() => {
+  //   messages.forEach((msg, index) => {
+  //     if (msg.role !== "user" && !botMessage[index]) {
+  //       typeText(setBotMessage, index, msg.text, 20);
+  //     }
+  //   });
+  // }, [messages, botMessage]);
 
   // For optimisation, But I guess in our case botmessage will change as bot types so not much effect, still for better code structure.
   const renderedMessages = useMemo(() => {
@@ -79,7 +79,8 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
                   : "bg-botbubble max-w-[80%]"
               } whitespace-pre-line`}
             >
-              {msg.role === "user" ? msg.text : botMessage[index] || ""}
+              {/* {msg.role === "user" ? msg.text : botMessage[index] || ""} */}
+              {msg.text}
             </p>
             <p
               className={`text-xs italic w-full ${
@@ -92,7 +93,7 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
         </div>
       </div>
     ));
-  }, [messages, botMessage]);
+  }, [messages]);
 
   return (
     <>
