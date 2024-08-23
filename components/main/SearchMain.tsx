@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, KeyboardEvent, MouseEvent } from "react";
+import { ChangeEvent, KeyboardEvent, MouseEvent, useCallback } from "react";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
 import TypewriterComponent from "typewriter-effect";
@@ -133,13 +133,13 @@ function SearchMain({
     setShowSuggestions(false);
   };
 
-  const closeTrendingModal = () => {
+  const closeTrendingModal = useCallback(() => {
     setShowTrendingModal(false);
-  };
+  }, []);
 
-  const closeRecentlyAddedModal = () => {
+  const closeRecentlyAddedModal = useCallback(() => {
     setShowRecentlyAddedModal(false);
-  };
+  }, []);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
