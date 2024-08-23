@@ -7,7 +7,8 @@ import TypewriterComponent from "typewriter-effect";
 import { BsSend } from "react-icons/bs";
 import { UseCases } from "@/lib/constant";
 import { LuClock4 } from "react-icons/lu";
-import TrendingModal from "./trendingModal";
+import TrendingModal from "./TrendingModal";
+import RecentlyAddedModal from "./RecentlyAddedModal";
 
 interface SearchMainProp {
   messages: any[];
@@ -29,6 +30,8 @@ function SearchMain({
   const [showSuggestions, setShowSuggestions] = useState<boolean>(false);
   const [predictiveText, setPredictiveText] = useState<string>("");
   const [showTrendingModal, setShowTrendingModal] = useState<boolean>(false);
+  const [showRecentlyAddedModal, setShowRecentlyAddedModal] =
+    useState<boolean>(false);
 
   // Dummy as of now, Will be replaced by the response provided by API
   const suggestions = [
@@ -47,6 +50,74 @@ function SearchMain({
     "What can I do to improve acquisition?",
     "What is the optimised was to improve SEO?",
     "Suggest me some tools to visualize my websites analytics",
+    "What are popular tools for marketing?",
+  ];
+
+  // Dummy Data
+  const recentlyAddedItems = [
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
+    {
+      image: "/gpt-png.png",
+      name: "Chat GPT",
+      description:
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+      link: "https://openai.com/blog/chatgpt/",
+    },
   ];
 
   const handleTrendingClick = (query: string) => {
@@ -62,8 +133,12 @@ function SearchMain({
     setShowSuggestions(false);
   };
 
-  const closeModal = () => {
+  const closeTrendingModal = () => {
     setShowTrendingModal(false);
+  };
+
+  const closeRecentlyAddedModal = () => {
+    setShowRecentlyAddedModal(false);
   };
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -191,7 +266,10 @@ function SearchMain({
           showSuggestions && userInput ? "mt-[196px]" : "mt-6"
         }`}
       >
-        <button className="italic p-3 border border-[#d0d5dd] rounded-full">
+        <button
+          className="italic p-3 border border-[#d0d5dd] rounded-full"
+          onClick={() => setShowRecentlyAddedModal(true)}
+        >
           🔥 Recently Added
         </button>
         <div className="flex items-center gap-2 w-full">
@@ -213,10 +291,16 @@ function SearchMain({
         <>
           <TrendingModal
             trendingSearches={trendingSearches}
-            onClose={closeModal}
+            onClose={closeTrendingModal}
             onQueryClick={handleTrendingClick}
           />
         </>
+      )}
+      {showRecentlyAddedModal && (
+        <RecentlyAddedModal
+          recentlyAddedItems={recentlyAddedItems}
+          onClose={closeRecentlyAddedModal}
+        />
       )}
     </div>
   );
