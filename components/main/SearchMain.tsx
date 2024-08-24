@@ -142,12 +142,12 @@ function SearchMain({
   }, []);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!userInput.trim()) {
+      return;
+    }
     if (e.key === "Enter") {
       e.preventDefault();
 
-      if (userInput === "") {
-        return;
-      }
       setShowChat(true);
       handleSendMessage();
     } else if (e.key === "Tab" || e.key === "ArrowRight") {
@@ -181,6 +181,9 @@ function SearchMain({
 
   const handleButtonPress = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (!userInput.trim()) {
+      return;
+    }
     setShowChat(true);
     handleSendMessage();
   };

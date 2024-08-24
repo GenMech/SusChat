@@ -8,6 +8,8 @@ interface ChatInputProp {
   setUserInput: Function;
   handleSendMessage: Function;
   handleNewConversation: Function | any;
+  isLoading: boolean;
+  isBotTyping: boolean;
 }
 
 function ChatInput({
@@ -15,6 +17,8 @@ function ChatInput({
   setUserInput,
   handleSendMessage,
   handleNewConversation,
+  isLoading,
+  isBotTyping,
 }: ChatInputProp) {
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
@@ -35,19 +39,34 @@ function ChatInput({
         className="flex items-center justify-between gap-2 max-w-[700px] w-full px-3 border border-[#d0d5dd] bg-fade/10 rounded-lg"
       >
         <div className="flex items-center gap-2 w-full">
-          <CiSearch className="text-3xl" />
+          <CiSearch
+            className={`text-3xl ${
+              isLoading ? "cursor-not-allowed text-gray-400" : ""
+            }`}
+          />
           <input
             type="text"
             value={userInput}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setUserInput(e.target.value)
             }
-            onKeyDown={handleKeyPress}
-            className="outline-none bg-transparent py-2 w-full placeholder:text-sm placeholder:text-fontlight placeholder:font-normal"
+            disabled={isLoading}
+            onKeyDown={!isBotTyping ? handleKeyPress : undefined}
+            className={`outline-none bg-transparent py-2 w-full placeholder:text-sm placeholder:font-normal ${
+              isLoading
+                ? "placeholder:text-gray-400 cursor-not-allowed"
+                : "placeholder:text-fontlight"
+            }`}
             placeholder="Message Voyex"
           />
         </div>
-        <button className="pl-3 py-3" onClick={handleButtonPress}>
+        <button
+          className={`pl-3 py-3 ${
+            isLoading || isBotTyping ? "cursor-not-allowed text-gray-400" : ""
+          }`}
+          onClick={handleButtonPress}
+          disabled={isLoading || isBotTyping}
+        >
           <VscSend className="-rotate-45" />
         </button>
       </form>
