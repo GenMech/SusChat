@@ -110,16 +110,22 @@ function ChatBotMessage({
           <>
             <p
               className={`text-base text-fontlight font-normal px-4 py-2 rounded-lg ${
-                msg.role === "user"
+                error
+                  ? "bg-red-500 border border-red-400"
+                  : msg.role === "user"
                   ? "bg-userbubble w-max"
                   : "bg-botbubble max-w-[80%]"
               } whitespace-pre-line`}
             >
-              {msg.role === "user"
-                ? msg.text
-                : index === messages.length - 1
-                ? typedMessage
-                : msg.text}
+              {error ? (
+                <span>{error}</span>
+              ) : msg.role === "user" ? (
+                msg.text
+              ) : index === messages.length - 1 ? (
+                typedMessage
+              ) : (
+                msg.text
+              )}
             </p>
             <p
               className={`text-xs italic w-full ${
@@ -140,7 +146,7 @@ function ChatBotMessage({
       ref={scrollContainerRef}
     >
       {renderedMessages}
-      {(isLoading || error) && (
+      {isLoading && (
         <div className="flex flex-col items-start gap-2 pb-3">
           <div className="flex flex-row-reverse gap-2 items-center">
             <p className="">Voyex AI</p>
@@ -148,18 +154,8 @@ function ChatBotMessage({
               <Image alt="emoji" height={40} width={40} src="/emoji.png" />{" "}
             </span>
           </div>
-          <div
-            className={`flex text-fontlight text-base font-normal px-4 py-2 rounded-lg ${
-              isLoading ? "bg-botbubble" : "bg-red-500 border border-red-400"
-            } min-w-[18%]`}
-          >
-            {isLoading ? (
-              <>
-                Typing<span className="animate-pulse">...</span>
-              </>
-            ) : (
-              <span>{error}</span>
-            )}
+          <div className="flex text-fontlight text-base font-normal px-4 py-2 rounded-lg bg-botbubble min-w-[18%]">
+            Typing<span className="animate-pulse">...</span>
           </div>
         </div>
       )}
