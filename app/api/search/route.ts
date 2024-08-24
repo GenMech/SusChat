@@ -4,7 +4,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const response = await fetch(
-      "https://xkdcd1ic4k.execute-api.ap-southeast-2.amazonaws.com/default/sq",
+      "https://xkdcd1ic4k.execute-api.ap-southeast-2.amazonaws.com/dev/sq",
       {
         method: "POST",
         headers: {
