@@ -85,6 +85,9 @@ function SearchPageContainer() {
 
   const handleSendMessage = async () => {
     try {
+      if (!userInput.trim()) {
+        return;
+      }
       setIsLoading(true);
       const userMessage: Message = {
         text: userInput,
@@ -144,6 +147,7 @@ function SearchPageContainer() {
       setUserInput={setUserInput}
       handleSendMessage={handleSendMessage}
       handleNewConversation={handleNewConversation}
+      setShowChat={setShowChat}
       isLoading={isLoading}
     />
   );
