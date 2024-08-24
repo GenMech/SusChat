@@ -153,12 +153,13 @@ function ChatBotMessage({
               isLoading ? "bg-botbubble" : "bg-red-500 border border-red-400"
             } min-w-[18%]`}
           >
-            {isLoading && (
+            {isLoading ? (
               <>
                 Typing<span className="animate-pulse">...</span>
               </>
+            ) : (
+              <span>{error}</span>
             )}
-            {error && <span>{error}</span>}
           </div>
         </div>
       )}
