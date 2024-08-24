@@ -45,7 +45,7 @@ function ChatBotMessage({
     if (!scrollContainerRef.current) return false;
     const { scrollTop, scrollHeight, clientHeight } =
       scrollContainerRef.current;
-    return scrollHeight - scrollTop - clientHeight < 100;
+    return scrollHeight - scrollTop - clientHeight < 50;
   };
 
   useEffect(() => {
@@ -82,7 +82,7 @@ function ChatBotMessage({
   useEffect(() => {
     const latestMessage = messages[messages.length - 1];
     if (latestMessage && latestMessage.role !== "user") {
-      typeText(setTypedMessage, latestMessage.text, 15, setBotTyping);
+      typeText(setTypedMessage, latestMessage.text, 10, setBotTyping);
     }
   }, [messages]);
 
@@ -140,7 +140,7 @@ function ChatBotMessage({
       ref={scrollContainerRef}
     >
       {renderedMessages}
-      {isLoading && (
+      {(isLoading || error) && (
         <div className="flex flex-col items-start gap-2 pb-3">
           <div className="flex flex-row-reverse gap-2 items-center">
             <p className="">Voyex AI</p>
@@ -148,8 +148,17 @@ function ChatBotMessage({
               <Image alt="emoji" height={40} width={40} src="/emoji.png" />{" "}
             </span>
           </div>
-          <div className="flex text-fontlight text-base font-normal px-4 py-2 rounded-lg bg-botbubble min-w-[18%]">
-            Typing<span className="animate-pulse">...</span>
+          <div
+            className={`flex text-fontlight text-base font-normal px-4 py-2 rounded-lg ${
+              isLoading ? "bg-botbubble" : "bg-red-500 border border-red-400"
+            } min-w-[18%]`}
+          >
+            {isLoading && (
+              <>
+                Typing<span className="animate-pulse">...</span>
+              </>
+            )}
+            {error && <span>{error}</span>}
           </div>
         </div>
       )}
@@ -161,7 +170,7 @@ function ChatBotMessage({
           </div>
         </div>
       )}
-      {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
+      {/* {error && <div className="text-red-500 text-sm mb-4">{error}</div>} */}
     </div>
   );
 }
