@@ -1,60 +1,96 @@
-import Image from "next/image";
 import { useState, useEffect, useRef, useMemo } from "react";
-import { ScrollArea } from "../ui/scroll-area";
+import Image from "next/image";
 import { FcFaq } from "react-icons/fc";
 
 interface MessageProp {
   messages: any[];
   error: string | null;
   isLoading: boolean;
+  setBotTyping: Function;
 }
 
 export const typeText = (
-  setBotMessage: React.Dispatch<React.SetStateAction<Record<number, string>>>,
-  index: number,
+  setTypedMessage: React.Dispatch<React.SetStateAction<string>>,
   text: string,
-  speed: number
+  speed: number,
+  setBotTyping: Function
 ) => {
+  setBotTyping(true);
   let charIndex = 0;
+
   const interval = setInterval(() => {
-    setBotMessage((prev) => {
-      const currentText = prev[index] || "";
-      const newText = currentText + text.charAt(charIndex);
-      if (charIndex >= text.length - 1) {
-        clearInterval(interval);
-      }
-      return {
-        ...prev,
-        [index]: newText,
-      };
-    });
+    const newText = text.slice(0, charIndex + 1);
+    setTypedMessage(newText);
+
+    if (charIndex >= text.length - 1) {
+      clearInterval(interval);
+      setBotTyping(false);
+    }
+
     charIndex++;
   }, speed);
 };
 
-function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [botMessage, setBotMessage] = useState<Record<number, string>>({});
+function ChatBotMessage({
+  messages,
+  error,
+  isLoading,
+  setBotTyping,
+}: MessageProp) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [typedMessage, setTypedMessage] = useState<string>("");
+  const [shouldAutoScroll, setShouldAutoScroll] = useState(true);
+
+  const isNearBottom = () => {
+    if (!scrollContainerRef.current) return false;
+    const { scrollTop, scrollHeight, clientHeight } =
+      scrollContainerRef.current;
+    return scrollHeight - scrollTop - clientHeight < 100;
+  };
 
   useEffect(() => {
-    ref.current?.scrollIntoView();
-  }, [messages, botMessage]);
+    if (shouldAutoScroll) {
+      scrollContainerRef.current?.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        // behavior: "smooth",
+      });
+    }
+  }, [messages, typedMessage, shouldAutoScroll]);
 
+  // Detect user scrolling and determine if auto-scroll should be enabled
   useEffect(() => {
-    messages.forEach((msg, index) => {
-      if (msg.role !== "user" && !botMessage[index]) {
-        typeText(setBotMessage, index, msg.text, 20);
+    const handleScroll = () => {
+      if (isNearBottom()) {
+        setShouldAutoScroll(true);
+      } else {
+        setShouldAutoScroll(false);
       }
-    });
-  }, [messages, botMessage]);
+    };
 
-  // For optimisation, But I guess in our case botmessage will change as bot types so not much effect, still for better code structure.
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const latestMessage = messages[messages.length - 1];
+    if (latestMessage && latestMessage.role !== "user") {
+      typeText(setTypedMessage, latestMessage.text, 15, setBotTyping);
+    }
+  }, [messages]);
+
   const renderedMessages = useMemo(() => {
     return messages.map((msg, index) => (
       <div
         key={index}
         className={`pb-3 ${msg.role === "user" ? "self-end" : "self-start"}`}
-        // ref={index == messages.length - 1 ? ref : null} // If the message is last one or latest one
       >
         <div
           className={`flex flex-col gap-2 ${
@@ -79,7 +115,11 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
                   : "bg-botbubble max-w-[80%]"
               } whitespace-pre-line`}
             >
-              {msg.role === "user" ? msg.text : botMessage[index] || ""}
+              {msg.role === "user"
+                ? msg.text
+                : index === messages.length - 1
+                ? typedMessage
+                : msg.text}
             </p>
             <p
               className={`text-xs italic w-full ${
@@ -92,37 +132,37 @@ function ChatBotMessage({ messages, error, isLoading }: MessageProp) {
         </div>
       </div>
     ));
-  }, [messages, botMessage]);
+  }, [messages, typedMessage]);
 
   return (
-    <>
-      <ScrollArea className="relative w-full h-[80vh] pt-3">
-        {renderedMessages}
-        {isLoading && (
-          <div className="flex flex-col items-start gap-2 pb-3">
-            <div className="flex flex-row-reverse gap-2 items-center">
-              <p className="">Voyex AI</p>
-              <span className="w-7 h-7 rounded-full overflow-hidden">
-                <Image alt="emoji" height={40} width={40} src="/emoji.png" />{" "}
-              </span>
-            </div>
-            <div className="flex text-fontlight text-base font-normal px-4 py-2 rounded-lg bg-botbubble min-w-[18%]">
-              Typing<span className="animate-pulse">...</span>
-            </div>
+    <div
+      className="relative w-full h-[80vh] pt-3 overflow-y-auto"
+      ref={scrollContainerRef}
+    >
+      {renderedMessages}
+      {isLoading && (
+        <div className="flex flex-col items-start gap-2 pb-3">
+          <div className="flex flex-row-reverse gap-2 items-center">
+            <p className="">Voyex AI</p>
+            <span className="w-7 h-7 rounded-full overflow-hidden">
+              <Image alt="emoji" height={40} width={40} src="/emoji.png" />{" "}
+            </span>
           </div>
-        )}
-        <div ref={ref} />
-        {messages.length === 0 && (
-          <div className="absolute flex items-center justify-center w-full h-full">
-            <div className="flex flex-col items-center text-white/50">
-              <FcFaq className="text-7xl" />
-              <h1 className="text-3xl capitalize">nothing here!!!</h1>
-            </div>
+          <div className="flex text-fontlight text-base font-normal px-4 py-2 rounded-lg bg-botbubble min-w-[18%]">
+            Typing<span className="animate-pulse">...</span>
           </div>
-        )}
-      </ScrollArea>
+        </div>
+      )}
+      {messages.length === 0 && (
+        <div className="absolute flex items-center justify-center w-full h-full">
+          <div className="flex flex-col items-center text-white/50">
+            <FcFaq className="text-7xl" />
+            <h1 className="text-3xl capitalize">nothing here!!!</h1>
+          </div>
+        </div>
+      )}
       {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
-    </>
+    </div>
   );
 }
 
