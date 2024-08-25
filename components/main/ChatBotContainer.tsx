@@ -31,7 +31,7 @@ function ChatBotContainer({
     <div className="relative flex flex-col justify-between w-full h-full mb-24">
       <ChatTop messages={messages} setShowChat={setShowChat} />
 
-      <div className="flex items-start justify-between gap-8 w-full px-5 mt-5">
+      <div className="flex items-start justify-between gap-8 w-full px-5 mt-5 pt-8">
         <ChatBotMessage
           messages={messages}
           error={error}
