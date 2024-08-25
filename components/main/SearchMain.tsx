@@ -212,7 +212,7 @@ function SearchMain({
             showSuggestions && userInput
               ? "rounded-t-lg bg-[#31313140] backdrop-blur-[3.4px] border-x-[#46BA3C] border-t-[#46BA3C]"
               : "rounded-full border-[#d0d5dd] "
-          }`}
+          } hover:shadow-md hover:border-[#46BA3C] group`}
         >
           <CiSearch className="text-4xl" />
           <div className="relative w-full">
@@ -232,8 +232,10 @@ function SearchMain({
             )}
           </div>
           <button
-            className={`py-3 pr-[1px] flex items-center justify-center w-9 h-8 rounded-full ${
-              userInput ? "bg-white text-black" : "bg-transparent text-white"
+            className={`py-3 pr-[2px] flex items-center justify-center w-9 h-8 rounded-full ${
+              userInput
+                ? "bg-white text-black transform transition-transform duration-200 rotate-45"
+                : "bg-transparent text-white transform transition-transform duration-200 group-hover:rotate-45 group-hover:text-[#46BA3C]"
             } border`}
             onClick={handleButtonPress}
           >
