@@ -34,9 +34,12 @@ function ChatTop({ messages, setShowChat }: ChatInputProp) {
   }, [setShowChat]);
 
   return (
-    <div className="sticky top-0 flex items-center justify-between py-1 px-10">
-      <div className="flex items-center gap-2">
-        <button onClick={handleBackClick} className="back-button">
+    <div className="sticky top-[10px] flex items-center justify-between py-1 px-6">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={handleBackClick}
+          className={`text-base text-center text-fontlight font-medium rounded-md bg-btnlime px-2 py-1`}
+        >
           <IoMdArrowRoundBack />
         </button>
         <h1 className="">

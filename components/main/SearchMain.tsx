@@ -263,30 +263,35 @@ function SearchMain({
           </div>
         )}
       </div>
-
       <div
         className={`flex flex-col-reverse gap-3 text-base text-fontlight font-normal w-full ${
           showSuggestions && userInput ? "mt-[196px]" : "mt-10"
         }`}
       >
         <button
-          className="italic p-3 border border-[#d0d5dd] rounded-md"
+          className="italic p-3 border border-[#d0d5dd] rounded-md transition-all duration-200 ease-in-out hover:shadow-md hover:border-[#46BA3C]"
           onClick={() => setShowRecentlyAddedModal(true)}
         >
-          🔥 Recently Added
+          <span className="transition-transform duration-200 ease-in-out hover:scale-110 inline-block w-full">
+            🔥 Recently Added
+          </span>
         </button>
         <div className="flex items-center gap-3 w-full">
           <button
-            className=" italic p-3 border border-[#d0d5dd] rounded-md w-1/2"
+            className="italic p-3 border border-[#d0d5dd] rounded-md w-1/2 transition-all duration-200 ease-in-out hover:shadow-md hover:border-[#46BA3C]"
             onClick={handleSurpriseClick}
           >
-            🔥 Surprise ME!
+            <span className="transition-transform duration-200 ease-in-out hover:scale-110 inline-block w-full">
+              🔥 Surprise ME!
+            </span>
           </button>
           <button
-            className="italic p-3 border border-[#d0d5dd] rounded-lg w-1/2"
+            className="italic p-3 border border-[#d0d5dd] rounded-lg w-1/2 transition-all duration-200 ease-in-out hover:shadow-md hover:border-[#46BA3C]"
             onClick={() => setShowTrendingModal(true)}
           >
-            🔥 Trending Searches
+            <span className="transition-transform duration-200 ease-in-out hover:scale-110 inline-block w-full">
+              🔥 Trending Searches
+            </span>
           </button>
         </div>
       </div>

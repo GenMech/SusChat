@@ -18,7 +18,7 @@ function Navbar() {
 
   return (
     <div
-      className={`flex flex-col items-center gap-5 justify-between py-4 rounded-xl z-10 ml-3 h-[95%] px-3 ${
+      className={`flex flex-col items-center gap-5 justify-between py-4 rounded-xl z-10 ml-3 h-[96%] px-3 ${
         isOpen ? "w-64" : "w-[86px]"
       } bg-gradient-to-tr from-[#00a766]/10 to-[#999999]/10 overflow-hidden transition-all duration-300`}
     >
