@@ -61,6 +61,7 @@ function SearchPageContainer() {
       setError("Failed to send message. Please try again.");
     } finally {
       setIsLoading(false);
+      setError(null);
     }
   };
 

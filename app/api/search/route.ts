@@ -3,6 +3,7 @@ import pRetry from "p-retry";
 
 export async function POST(req: NextRequest) {
   try {
+    console.log("I am in route");
     const body = await req.json();
     const data = await pRetry(
       () =>
