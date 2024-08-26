@@ -27,6 +27,7 @@ function SearchPageContainer() {
         return;
       }
       setIsLoading(true);
+      setError(null);
       const userMessage: Message = {
         text: userInput,
         role: "user",
