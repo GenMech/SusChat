@@ -142,12 +142,12 @@ function SearchMain({
   }, []);
 
   const handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (!userInput.trim()) {
+      return;
+    }
     if (e.key === "Enter") {
       e.preventDefault();
 
-      if (userInput === "") {
-        return;
-      }
       setShowChat(true);
       handleSendMessage();
     } else if (e.key === "Tab" || e.key === "ArrowRight") {
@@ -181,6 +181,9 @@ function SearchMain({
 
   const handleButtonPress = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (!userInput.trim()) {
+      return;
+    }
     setShowChat(true);
     handleSendMessage();
   };
@@ -209,7 +212,7 @@ function SearchMain({
             showSuggestions && userInput
               ? "rounded-t-lg bg-[#31313140] backdrop-blur-[3.4px] border-x-[#46BA3C] border-t-[#46BA3C]"
               : "rounded-full border-[#d0d5dd] "
-          }`}
+          } hover:shadow-md hover:border-[#46BA3C] group`}
         >
           <CiSearch className="text-4xl" />
           <div className="relative w-full">
@@ -229,8 +232,10 @@ function SearchMain({
             )}
           </div>
           <button
-            className={`py-3 pr-[1px] flex items-center justify-center w-9 h-8 rounded-full ${
-              userInput ? "bg-white text-black" : "bg-transparent text-white"
+            className={`py-3 pr-[2px] flex items-center justify-center w-9 h-8 rounded-full ${
+              userInput
+                ? "bg-white text-black transform transition-transform duration-200 rotate-45"
+                : "bg-transparent text-white transform transition-transform duration-200 group-hover:rotate-45 group-hover:text-[#46BA3C]"
             } border`}
             onClick={handleButtonPress}
           >
@@ -260,30 +265,35 @@ function SearchMain({
           </div>
         )}
       </div>
-
       <div
         className={`flex flex-col-reverse gap-3 text-base text-fontlight font-normal w-full ${
           showSuggestions && userInput ? "mt-[196px]" : "mt-10"
         }`}
       >
         <button
-          className="italic p-3 border border-[#d0d5dd] rounded-md"
+          className="italic p-3 border border-[#d0d5dd] rounded-md transition-all duration-200 ease-in-out hover:shadow-md hover:border-[#46BA3C]"
           onClick={() => setShowRecentlyAddedModal(true)}
         >
-          🔥 Recently Added
+          <span className="transition-transform duration-200 ease-in-out hover:scale-110 inline-block w-full">
+            🔥 Recently Added
+          </span>
         </button>
         <div className="flex items-center gap-3 w-full">
           <button
-            className=" italic p-3 border border-[#d0d5dd] rounded-md w-1/2"
+            className="italic p-3 border border-[#d0d5dd] rounded-md w-1/2 transition-all duration-200 ease-in-out hover:shadow-md hover:border-[#46BA3C]"
             onClick={handleSurpriseClick}
           >
-            🔥 Surprise ME!
+            <span className="transition-transform duration-200 ease-in-out hover:scale-110 inline-block w-full">
+              🔥 Surprise ME!
+            </span>
           </button>
           <button
-            className="italic p-3 border border-[#d0d5dd] rounded-lg w-1/2"
+            className="italic p-3 border border-[#d0d5dd] rounded-lg w-1/2 transition-all duration-200 ease-in-out hover:shadow-md hover:border-[#46BA3C]"
             onClick={() => setShowTrendingModal(true)}
           >
-            🔥 Trending Searches
+            <span className="transition-transform duration-200 ease-in-out hover:scale-110 inline-block w-full">
+              🔥 Trending Searches
+            </span>
           </button>
         </div>
       </div>
