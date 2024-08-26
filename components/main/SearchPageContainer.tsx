@@ -27,6 +27,7 @@ function SearchPageContainer() {
         return;
       }
       setIsLoading(true);
+      setError(null);
       const userMessage: Message = {
         text: userInput,
         role: "user",
@@ -61,7 +62,6 @@ function SearchPageContainer() {
       setError("Failed to send message. Please try again.");
     } finally {
       setIsLoading(false);
-      setError(null);
     }
   };
 
