@@ -20,6 +20,15 @@ function SearchPageContainer() {
   const [error, setError] = useState<string | null>(null);
   const [showChat, setShowChat] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [sessionID, setSessionID] = useState<number | null>(null);
+
+  useEffect(() => {
+    const generateSessionID = (): number => {
+      return Date.now() + Math.floor(Math.random() * 10000);
+    };
+
+    setSessionID(generateSessionID());
+  }, []);
 
   const handleSendMessage = async () => {
     try {
@@ -42,7 +51,7 @@ function SearchPageContainer() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: userInput }),
+        body: JSON.stringify({ user_input: userInput, session_id: sessionID }),
       });
 
       if (!response.ok) {
@@ -52,7 +61,7 @@ function SearchPageContainer() {
       const data = await response.json();
       console.log("data:", data);
       const botMessage: Message = {
-        text: data.answer ?? "Failed to get response. Please try again!",
+        text: data.content ?? "Failed to get response. Please try again!",
         role: "bot",
         timestamp: new Date(),
       };
