@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function HomeNavbar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   console.log("data after signin:", session);
+  console.log("status:", status);
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "/" });

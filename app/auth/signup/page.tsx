@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -64,6 +64,7 @@ export default function SignUp() {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
+              disabled={loading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
           </div>
@@ -74,6 +75,7 @@ export default function SignUp() {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               required
+              disabled={loading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
           </div>
@@ -84,6 +86,7 @@ export default function SignUp() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
           </div>
@@ -94,6 +97,7 @@ export default function SignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={loading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
             <div

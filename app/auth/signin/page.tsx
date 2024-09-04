@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -60,6 +60,7 @@ export default function SignIn() {
                 setError("");
                 setEmail(e.target.value);
               }}
+              disabled={loading}
               required
               className={`block w-full px-[2px] py-2 bg-transparent border-b ${
                 error ? "border-red-500" : "border-gray-600"
@@ -75,6 +76,7 @@ export default function SignIn() {
               type={showPassword ? "text" : "password"} // Toggle between password and text
               placeholder="Password"
               value={password}
+              disabled={loading}
               onChange={(e) => {
                 setError("");
                 setPassword(e.target.value);
