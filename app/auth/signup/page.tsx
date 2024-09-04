@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { FcGoogle } from "react-icons/fc";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -11,9 +13,14 @@ export default function SignUp() {
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
     const response = await fetch("/api/signup", {
       method: "POST",
@@ -28,6 +35,8 @@ export default function SignUp() {
       }),
     });
 
+    setLoading(false);
+
     if (response.ok) {
       router.push("/auth/signin");
     } else {
@@ -37,70 +46,104 @@ export default function SignUp() {
   };
 
   const handleGoogleSignIn = async () => {
-    await signIn("google", { callbackUrl: "/" });
+    setGoogleLoading(true);
+    await signIn("google", { callbackUrl: "/search" });
   };
 
   return (
-    <div>
-      <h1>Sign Up</h1>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="text-black"
-          />
+    <div className="flex justify-center items-center h-screen">
+      <div className="w-full max-w-md p-8 space-y-7 bg-[#31313140] backdrop-blur-[3.4px] border border-[#46BA3C] rounded-xl shadow-lg">
+        <h2 className="text-3xl font-bold text-center text-white">
+          Welcome to Voyex
+        </h2>
+        <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+          <div>
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
+            />
+          </div>
+          <div>
+            <input
+              type="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
+            />
+          </div>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
+            />
+            <div
+              className="absolute right-4 top-3 cursor-pointer text-gray-400"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash size={24} /> : <FaEye size={24} />}
+            </div>
+          </div>
+          {error && <p className="text-red-500 text-center">{error}</p>}
+
+          <button
+            type="submit"
+            className="w-full py-3 mt-6 font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors"
+          >
+            {loading ? (
+              <span className="animate-pulse">Signing Up...</span>
+            ) : (
+              "Sign Up"
+            )}
+          </button>
+        </form>
+
+        <div className="relative my-6 flex items-center">
+          <div className="flex-grow border-t border-gray-600"></div>
+          <span className="px-3 text-gray-300 bg-transparent">or</span>
+          <div className="flex-grow border-t border-gray-600"></div>
         </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="text-black"
-          />
+
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full flex items-center justify-center gap-2 py-3 px-4 text-black bg-white rounded-lg hover:bg-gray-100 transition-colors"
+        >
+          <FcGoogle className="w-6 h-6" />
+          {googleLoading ? (
+            <span className="animate-pulse">Signing Up...</span>
+          ) : (
+            "Sign up with Google"
+          )}
+        </button>
+        <div className="flex justify-center mt-2">
+          <span className="text-gray-400">
+            Already have an account?
+            <a href="/auth/signin" className="text-green-600 font-semibold">
+              {" "}
+              Sign In
+            </a>
+          </span>
         </div>
-        <div>
-          <label>First Name</label>
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-            className="text-black"
-          />
-        </div>
-        <div>
-          <label>Last Name</label>
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-            className="text-black"
-          />
-        </div>
-        <button type="submit">Sign Up</button>
-      </form>
-      <hr />
-      <button
-        onClick={handleGoogleSignIn}
-        style={{
-          backgroundColor: "#4285F4",
-          color: "white",
-          padding: "10px 20px",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
-      >
-        Sign in with Google
-      </button>
+      </div>
     </div>
   );
 }

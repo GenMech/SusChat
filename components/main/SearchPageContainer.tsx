@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-
 import { useState, useEffect, KeyboardEvent, ChangeEvent } from "react";
-
 import SearchMain from "./SearchMain";
 import ChatBotContainer from "@/components/main/ChatBotContainer";
+import { v4 as uuidv4 } from "uuid";
+import { useSession } from "next-auth/react";
 
 interface Message {
   text: string;
@@ -20,15 +20,30 @@ function SearchPageContainer() {
   const [error, setError] = useState<string | null>(null);
   const [showChat, setShowChat] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [sessionID, setSessionID] = useState<number | null>(null);
+  const [sessionID, setSessionID] = useState<string | null>(null);
+
+  const { data: session } = useSession();
+
+  console.log("session data:", session);
 
   useEffect(() => {
-    const generateSessionID = (): number => {
-      return Date.now() + Math.floor(Math.random() * 10000);
+    const generateSessionID = (): string => {
+      if (session?.user?.id) {
+        return session.user.id;
+      } else {
+        const storedUUID = localStorage.getItem("session_uuid");
+        if (storedUUID) {
+          return storedUUID;
+        } else {
+          const newUUID = uuidv4();
+          localStorage.setItem("session_uuid", newUUID);
+          return newUUID;
+        }
+      }
     };
 
     setSessionID(generateSessionID());
-  }, []);
+  }, [session]);
 
   const handleSendMessage = async () => {
     try {

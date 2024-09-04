@@ -20,7 +20,7 @@ export const authAdapter = {
     const query = "SELECT * FROM users WHERE email = ?";
     const result = (await executeQuery(query, [email])) as RowDataPacket[];
 
-    console.log("result in authadapter:", result);
+    // console.log("result in authadapter:", result);
 
     return result.length > 0 ? (result[0] as User) : null;
   },
@@ -87,7 +87,7 @@ export const authConfig: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user, account, profile }) {
       let dbUser;
-      console.log("token:", token);
+      // console.log("token:", token);
 
       // If sign in with google
       if (account?.provider === "google" && profile) {

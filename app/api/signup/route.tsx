@@ -1,4 +1,3 @@
-// /app/api/signup/route.ts
 import { NextResponse } from "next/server";
 import { authAdapter } from "@/lib/auth";
 import { v4 as uuidv4 } from "uuid";
@@ -26,7 +25,7 @@ export async function POST(request: Request) {
     };
 
     const user = await authAdapter.createUser(newUser);
-    console.log("user", user);
+    // console.log("user", user);
     return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
     console.error("Error signing up user:", error);
