@@ -22,13 +22,15 @@ function SearchPageContainer() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sessionID, setSessionID] = useState<string | null>(null);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   console.log("session data:", session);
 
   useEffect(() => {
     const generateSessionID = (): string => {
       if (session?.user?.id) {
+        localStorage.removeItem("session_uuid");
+        document.cookie = `session_uuid=${""}; path=/;`;
         return session.user.id;
       } else {
         const storedUUID = localStorage.getItem("session_uuid");

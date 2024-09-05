@@ -5,6 +5,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { signIn } from "next-auth/react";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { v4 as uuidv4 } from "uuid";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -22,6 +23,8 @@ export default function SignUp() {
     setError("");
     setLoading(true);
 
+    const storedUUID = localStorage.getItem("session_uuid");
+
     const response = await fetch("/api/signup", {
       method: "POST",
       headers: {
@@ -32,12 +35,14 @@ export default function SignUp() {
         password,
         first_name: firstName,
         last_name: lastName,
+        stored_session_uuid: storedUUID,
       }),
     });
 
     setLoading(false);
 
     if (response.ok) {
+      localStorage.removeItem("session_uuid");
       router.push("/auth/signin");
     } else {
       const data = await response.json();
@@ -46,6 +51,9 @@ export default function SignUp() {
   };
 
   const handleGoogleSignIn = async () => {
+    const storedUUID = localStorage.getItem("session_uuid") || uuidv4();
+    document.cookie = `session_uuid=${storedUUID}; path=/;`;
+    localStorage.removeItem("session_uuid");
     setGoogleLoading(true);
     await signIn("google", { callbackUrl: "/search" });
   };
@@ -64,7 +72,7 @@ export default function SignUp() {
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
               required
-              disabled={loading}
+              disabled={loading || googleLoading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
           </div>
@@ -75,7 +83,7 @@ export default function SignUp() {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
               required
-              disabled={loading}
+              disabled={loading || googleLoading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
           </div>
@@ -86,7 +94,7 @@ export default function SignUp() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              disabled={loading}
+              disabled={loading || googleLoading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
           </div>
@@ -97,7 +105,7 @@ export default function SignUp() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              disabled={loading}
+              disabled={loading || googleLoading}
               className="block w-full px-[2px] py-2 bg-transparent border-b border-gray-600 text-gray-200 focus:outline-none focus:border-green-500 hover:border-green-500 transition-colors"
             />
             <div

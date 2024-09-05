@@ -10,7 +10,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useSession, signOut } from "next-auth/react";
 
 function Navbar() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(true);
   const pathname = usePathname();
 
@@ -123,7 +123,7 @@ function Navbar() {
       </div>
 
       <div className={`flex flex-col items-center gap-2 w-full z-10`}>
-        {!session ? (
+        {!session && status !== "loading" ? (
           <div className="flex flex-col w-full gap-2">
             <Link href="/auth/signup">
               <button

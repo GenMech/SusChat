@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "nextjs-toploader/app";
 import { FcGoogle } from "react-icons/fc";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { v4 as uuidv4 } from "uuid";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
@@ -40,6 +41,9 @@ export default function SignIn() {
   };
 
   const handleGoogleSignIn = async () => {
+    const storedUUID = localStorage.getItem("session_uuid") || uuidv4();
+    document.cookie = `session_uuid=${storedUUID}; path=/;`;
+    localStorage.removeItem("session_uuid");
     setGoogleLoading(true);
     await signIn("google", { callbackUrl: "/search" });
   };
@@ -60,7 +64,7 @@ export default function SignIn() {
                 setError("");
                 setEmail(e.target.value);
               }}
-              disabled={loading}
+              disabled={loading || googleLoading}
               required
               className={`block w-full px-[2px] py-2 bg-transparent border-b ${
                 error ? "border-red-500" : "border-gray-600"
@@ -73,10 +77,10 @@ export default function SignIn() {
           </div>
           <div className="relative">
             <input
-              type={showPassword ? "text" : "password"} // Toggle between password and text
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
-              disabled={loading}
+              disabled={loading || googleLoading}
               onChange={(e) => {
                 setError("");
                 setPassword(e.target.value);

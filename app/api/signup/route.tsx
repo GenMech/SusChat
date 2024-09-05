@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 
 export async function POST(request: Request) {
-  const { email, password, first_name, last_name } = await request.json();
+  const { email, password, first_name, last_name, stored_session_uuid } =
+    await request.json();
 
   try {
     const existingUser = await authAdapter.getUserByEmail(email);
@@ -15,9 +16,11 @@ export async function POST(request: Request) {
       );
     }
 
+    const userID = stored_session_uuid || uuidv4(); // If user signing up after chatting with bot, We might already have id in session_uuid
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = {
-      id: uuidv4(),
+      id: userID,
       email,
       password: hashedPassword,
       first_name,
@@ -25,7 +28,6 @@ export async function POST(request: Request) {
     };
 
     const user = await authAdapter.createUser(newUser);
-    // console.log("user", user);
     return NextResponse.json({ user }, { status: 201 });
   } catch (error) {
     console.error("Error signing up user:", error);
