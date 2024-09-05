@@ -30,7 +30,6 @@ function SearchPageContainer() {
     const generateSessionID = (): string => {
       if (session?.user?.id) {
         localStorage.removeItem("session_uuid");
-        document.cookie = `session_uuid=${""}; path=/;`;
         return session.user.id;
       } else {
         const storedUUID = localStorage.getItem("session_uuid");
