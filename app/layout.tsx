@@ -7,6 +7,7 @@ import StarsCanvas from "@/components/main/StarBackground";
 import Image from "next/image";
 import Animate from "@/components/sub/animate";
 import StoreProvider from "./StoreProvider";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body
         className={`${inter.className} relative flex items-center justify-center text-fontlight h-screen w-screen overflow-hidden`}
       >
+        <NextTopLoader showSpinner={false} color="#46BA3C" />
         <StarsCanvas />
         <Image
           className="absolute top-0 bottom-0 right-0 left-0 z-0 w-screen h-screen bg-contain"
