@@ -55,9 +55,9 @@ const TrendingModal: React.FC<TrendingModalProps> = ({
             ))}
           </ul>
         </div>
-        <div className="mt-4 pt-5">
+        <div className="lg:mt-4 pt-2">
           <button
-            className="lg:absolute lg:bottom-4 lg:right-4 flex items-center justify-center p-2 bg-red-600 text-white rounded lg:w-[10%] w-[15%]"
+            className="lg:absolute lg:bottom-4 lg:right-4 flex items-center justify-center p-1 bg-red-600 hover:bg-red-700 text-white rounded lg:w-[8%] w-[12%]"
             onClick={onClose}
           >
             Close

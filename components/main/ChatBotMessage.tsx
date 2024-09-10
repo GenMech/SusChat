@@ -111,7 +111,7 @@ function ChatBotMessage({
             <p
               className={`text-base text-fontlight font-normal px-4 py-2 rounded-lg ${
                 msg.role === "user"
-                  ? "bg-userbubble w-max"
+                  ? "bg-userbubble max-w-[80%]"
                   : "bg-botbubble max-w-[80%]"
               } whitespace-pre-line`}
             >

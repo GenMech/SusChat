@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-
 import { useState, useEffect, KeyboardEvent, ChangeEvent } from "react";
-
 import SearchMain from "./SearchMain";
 import ChatBotContainer from "@/components/main/ChatBotContainer";
+import { v4 as uuidv4 } from "uuid";
+import { useSession } from "next-auth/react";
 
 interface Message {
   text: string;
@@ -20,6 +20,31 @@ function SearchPageContainer() {
   const [error, setError] = useState<string | null>(null);
   const [showChat, setShowChat] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [sessionID, setSessionID] = useState<string | null>(null);
+
+  const { data: session, status } = useSession();
+
+  console.log("session data:", session);
+
+  useEffect(() => {
+    const generateSessionID = (): string => {
+      if (session?.user?.id) {
+        localStorage.removeItem("session_uuid");
+        return session.user.id;
+      } else {
+        const storedUUID = localStorage.getItem("session_uuid");
+        if (storedUUID) {
+          return storedUUID;
+        } else {
+          const newUUID = uuidv4();
+          localStorage.setItem("session_uuid", newUUID);
+          return newUUID;
+        }
+      }
+    };
+
+    setSessionID(generateSessionID());
+  }, [session]);
 
   const handleSendMessage = async () => {
     try {
@@ -27,6 +52,7 @@ function SearchPageContainer() {
         return;
       }
       setIsLoading(true);
+      setError(null);
       const userMessage: Message = {
         text: userInput,
         role: "user",
@@ -41,7 +67,7 @@ function SearchPageContainer() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ prompt: userInput }),
+        body: JSON.stringify({ user_input: userInput, session_id: sessionID }),
       });
 
       if (!response.ok) {
@@ -51,7 +77,7 @@ function SearchPageContainer() {
       const data = await response.json();
       console.log("data:", data);
       const botMessage: Message = {
-        text: data.answer ?? "Failed to get response. Please try again!",
+        text: data.content ?? "Failed to get response. Please try again!",
         role: "bot",
         timestamp: new Date(),
       };

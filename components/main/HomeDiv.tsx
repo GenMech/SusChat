@@ -14,7 +14,7 @@ function HomeDiv() {
       </p>
 
       <button
-        className="flex items-center justify-center gap-3 text-base font-medium text-btnlime max-w-80 w-full p-3 border border-btnlime rounded-lg mt-3 hover:max-w-[390px] transition-all btn-start"
+        className="flex items-center justify-center gap-3 text-base font-medium text-btnlime max-w-80 w-full p-3 border border-btnlime rounded-3xl mt-3 hover:max-w-[390px] transition-all btn-start"
         onClick={() => router.push("/search")}
       >
         <div className="flex items-center gap-2">

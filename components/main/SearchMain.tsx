@@ -59,63 +59,28 @@ function SearchMain({
       image: "/gpt-png.png",
       name: "Chat GPT",
       description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation. We’ve trained a model called ChatGPT which interacts in a conversational way. The dialogue format makes it possible for ChatGPT to answer followup questions, admit its mistakes, challenge incorrect premises, and reject inappropriate requests.",
       link: "https://openai.com/blog/chatgpt/",
     },
     {
       image: "/gpt-png.png",
       name: "Chat GPT",
       description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation. We’ve trained a model called ChatGPT which interacts in a conversational way. The dialogue format makes it possible for ChatGPT to answer followup questions, admit its mistakes, challenge incorrect premises, and reject inappropriate requests.",
       link: "https://openai.com/blog/chatgpt/",
     },
     {
       image: "/gpt-png.png",
       name: "Chat GPT",
       description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation. We’ve trained a model called ChatGPT which interacts in a conversational way. The dialogue format makes it possible for ChatGPT to answer followup questions, admit its mistakes, challenge incorrect premises, and reject inappropriate requests..",
       link: "https://openai.com/blog/chatgpt/",
     },
     {
       image: "/gpt-png.png",
       name: "Chat GPT",
       description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
-      link: "https://openai.com/blog/chatgpt/",
-    },
-    {
-      image: "/gpt-png.png",
-      name: "Chat GPT",
-      description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
-      link: "https://openai.com/blog/chatgpt/",
-    },
-    {
-      image: "/gpt-png.png",
-      name: "Chat GPT",
-      description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
-      link: "https://openai.com/blog/chatgpt/",
-    },
-    {
-      image: "/gpt-png.png",
-      name: "Chat GPT",
-      description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
-      link: "https://openai.com/blog/chatgpt/",
-    },
-    {
-      image: "/gpt-png.png",
-      name: "Chat GPT",
-      description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
-      link: "https://openai.com/blog/chatgpt/",
-    },
-    {
-      image: "/gpt-png.png",
-      name: "Chat GPT",
-      description:
-        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation.",
+        "ChatGPT is a chatbot and virtual assistant developed by OpenAI and launched on November 30, 2022. Based on large language models, it enables users to refine and steer a conversation. We’ve trained a model called ChatGPT which interacts in a conversational way. The dialogue format makes it possible for ChatGPT to answer followup questions, admit its mistakes, challenge incorrect premises, and reject inappropriate requests.",
       link: "https://openai.com/blog/chatgpt/",
     },
   ];

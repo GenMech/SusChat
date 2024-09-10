@@ -5,15 +5,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { GoSidebarCollapse } from "react-icons/go";
 import { usePathname } from "next/navigation";
-import { VscSignIn } from "react-icons/vsc";
+import { VscSignIn, VscSignOut } from "react-icons/vsc";
 import { FaUserCircle } from "react-icons/fa";
+import { useSession, signOut } from "next-auth/react";
 
 function Navbar() {
+  const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(true);
   const pathname = usePathname();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: "/" });
   };
 
   return (
@@ -36,46 +42,6 @@ function Navbar() {
       </div>
 
       <div className="flex flex-col gap-4 w-full items-center justify-center pb-2">
-        {/* <div className="w-full">
-          <button className="flex items-center w-full px-4 py-3 bg-none">
-            <Image
-              src="/chatgpt.png"
-              alt="chatgpt logo"
-              width={24}
-              height={24}
-            />
-            <span className="text-base text-white font-medium ml-2">
-              ChatGPT
-            </span>
-            <span className="text-xs text-white font-normal ml-[10px]">
-              Text
-            </span>
-          </button>
-          <button className="flex items-center w-full px-4 py-3 bg-none">
-            <Image src="/gemini.png" alt="gemini logo" width={24} height={24} />
-            <span className="text-base text-white font-medium ml-2">
-              Gemini
-            </span>
-            <span className="text-xs text-white font-normal ml-[10px]">
-              Text/Image
-            </span>
-          </button>
-          <button className="flex items-center w-full px-4 py-3 bg-none">
-            <Image
-              src="/synthesia.png"
-              alt="synthesia logo"
-              width={24}
-              height={24}
-            />
-            <span className="text-base text-white font-medium ml-2">
-              Synthesia
-            </span>
-            <span className="text-xs text-white font-normal ml-[10px]">
-              Image
-            </span>
-          </button>
-        </div> */}
-
         <div className="flex flex-col items-center w-full gap-2 z-10">
           <Link
             href="/search"
@@ -157,20 +123,40 @@ function Navbar() {
       </div>
 
       <div className={`flex flex-col items-center gap-2 w-full z-10`}>
-        <button
-          title="Signup"
-          className="flex items-center justify-center gap-3 text-btnlime text-base font-medium py-3 w-full h-12 rounded-xl bg-none capitalize"
-        >
-          {!isOpen && <VscSignIn className="text-xl" />}
-          {isOpen && "sign up"}
-        </button>
-        <button
-          title="Login"
-          className="flex items-center justify-center gap-3 text-fontlight text-base font-medium py-3 w-full h-12 rounded-xl bg-btnlime capitalize"
-        >
-          {!isOpen && <FaUserCircle className="text-xl" />}
-          {isOpen && "log in"}
-        </button>
+        {!session && status !== "loading" ? (
+          <div className="flex flex-col w-full gap-2">
+            <Link href="/auth/signup">
+              <button
+                title="Signup"
+                className="flex items-center justify-center gap-3 text-btnlime text-base font-medium py-3 w-full h-12 rounded-xl bg-none capitalize"
+              >
+                {!isOpen && <VscSignIn className="text-xl" />}
+                {isOpen && "sign up"}
+              </button>
+            </Link>
+            {isOpen && (
+              <Link href="/auth/signin">
+                <button
+                  title="Login"
+                  className="flex items-center justify-center gap-3 text-fontlight text-base font-medium py-3 w-full h-12 rounded-xl bg-btnlime capitalize"
+                >
+                  log in
+                </button>
+              </Link>
+            )}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-2 w-full">
+            <button
+              title="Logout"
+              onClick={handleSignOut}
+              className="flex items-center justify-center gap-3 text-fontlight text-base font-medium py-3 w-full h-12 rounded-xl bg-red-600 capitalize"
+            >
+              {!isOpen && <VscSignOut className="text-xl" />}
+              {isOpen && "log out"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
