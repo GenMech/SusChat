@@ -32,10 +32,10 @@ export default function RootLayout({
         <StarsCanvas />
         <Image
           className="absolute top-0 bottom-0 right-0 left-0 z-0 w-screen h-screen bg-contain"
-          src="/background.png"
+          src="/background2.png"
           alt="background image"
-          width={1419}
-          height={766}
+          width={1440}
+          height={800}
         />
         <Animate />
         <div className="relative w-full h-full z-[2]">

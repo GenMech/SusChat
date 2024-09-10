@@ -44,7 +44,7 @@ export default function HomeNavbar() {
               </button>
             </Link>
             <Link href="/auth/signin">
-              <button className="text-fontlight text-base font-medium py-2 px-9 rounded-xl bg-btnlime capitalize">
+              <button className="text-fontlight text-base font-medium py-2 px-9 rounded-3xl bg-btnlime capitalize">
                 Log In
               </button>
             </Link>
