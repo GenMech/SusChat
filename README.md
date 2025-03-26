@@ -1,3 +1,3 @@
-# Welcome to the Voyex App Repo (personal)
+# Welcome to the SusChat
 
 Your Gen AI based Search Tool
